@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bnd-LastModified: 1785858152697
+Build-Jdk-Spec: 26
+Bundle-ManifestVersion: 2
+Bundle-Name: hello-api
+Bundle-SymbolicName: hello-api
+Bundle-Version: 1.0.0
+Created-By: Apache Maven Bundle Plugin 5.1.9
+Export-Package: demo.api;version="1.0.0"
+Import-Package: java.lang
+Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=17))"
+Tool: Bnd-6.3.1.202206071316

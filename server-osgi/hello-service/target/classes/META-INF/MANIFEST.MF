@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bnd-LastModified: 1785858152990
+Build-Jdk-Spec: 26
+Bundle-Activator: demo.service.HelloActivator
+Bundle-ManifestVersion: 2
+Bundle-Name: hello-service
+Bundle-SymbolicName: hello-service
+Bundle-Version: 1.0.0
+Created-By: Apache Maven Bundle Plugin 5.1.9
+Export-Package: demo.service;uses:="demo.api,org.osgi.framework";version
+ ="1.0.0"
+Import-Package: demo.api;version="[1.0,2)",org.osgi.framework;version="[
+ 1.8,2)"
+Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=17))"
+Tool: Bnd-6.3.1.202206071316
