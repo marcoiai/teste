@@ -73,7 +73,8 @@ pipeline {
                     DEPLOY_PORT=$((19090 + BUILD_NUMBER))
                     docker run --detach --name ci-cpp-osgi-demo-running --publish $DEPLOY_PORT:9090 ci-cpp-osgi-demo:${BUILD_NUMBER}
                     sleep 1
-                    curl --fail --silent http://127.0.0.1:$DEPLOY_PORT/hello
+                    DEPLOY_IP=$(docker inspect --format '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ci-cpp-osgi-demo-running)
+                    curl --fail --silent http://$DEPLOY_IP:9090/hello
                 '''
             }
         }
