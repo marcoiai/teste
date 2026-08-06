@@ -8,7 +8,11 @@ class Handler(BaseHTTPRequestHandler):
         if self.path != "/hello":
             self.send_error(404)
             return
-        body = os.environ.get("HELLO_MESSAGE", "Hello World from OSGi!").encode()
+        message = os.environ.get("HELLO_MESSAGE")
+        if message is None:
+            with open("config/hello-message.txt", encoding="utf-8") as file:
+                message = file.read().strip()
+        body = message.encode()
         self.send_response(200)
         self.send_header("Content-Type", "text/plain; charset=utf-8")
         self.send_header("Content-Length", str(len(body)))

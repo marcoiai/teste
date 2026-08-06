@@ -4,8 +4,6 @@ pipeline {
     parameters {
         booleanParam(name: 'PUBLISH_ARTIFACTS', defaultValue: true,
             description: 'Publish build artifacts to Jenkins for downstream deployment.')
-        string(name: 'HELLO_MESSAGE', defaultValue: 'Hello World from OSGi!',
-            description: 'Message returned by the mock deployed endpoint.')
     }
 
     tools {
@@ -63,11 +61,12 @@ pipeline {
         stage('Mock deploy and verify') {
             steps {
                 sh '''
-                    HELLO_MESSAGE="$HELLO_MESSAGE" PORT=9090 python3 mock/hello_endpoint.py > /tmp/hello-endpoint.log 2>&1 &
+                    EXPECTED_MESSAGE=$(tr -d '\\r\\n' < config/hello-message.txt)
+                    PORT=9090 python3 mock/hello_endpoint.py > /tmp/hello-endpoint.log 2>&1 &
                     MOCK_PID=$!
                     trap 'kill $MOCK_PID 2>/dev/null || true' EXIT
                     sleep 1
-                    test "$(curl --fail --silent http://127.0.0.1:9090/hello)" = "$HELLO_MESSAGE"
+                    test "$(curl --fail --silent http://127.0.0.1:9090/hello)" = "$EXPECTED_MESSAGE"
                 '''
             }
         }
