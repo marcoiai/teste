@@ -6,10 +6,6 @@ pipeline {
             description: 'Publish build artifacts to Jenkins for downstream deployment.')
     }
 
-    tools {
-        maven 'Maven-3.9'
-    }
-
     options {
         timestamps()
         disableConcurrentBuilds()
