@@ -1,1 +1,1 @@
-Hello World from OSGi!
+Mensagem alterada via commit
