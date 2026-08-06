@@ -1,0 +1,4 @@
+native-hello/build/
+server-osgi/**/target/
+server-osgi/felix-cache/
+.vscode/

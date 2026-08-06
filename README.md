@@ -1,10 +1,21 @@
-Starter project.
+Minimal C++/OSGi integration demo for Jenkins CI.
 
 Current state:
-- Parent Maven project
-- hello-api module with HelloService interface
-- Empty hello-service module
-- Empty hello-client module
+- `native-hello` is a C++17 client with a CTest smoke test
+- `hello-api` defines the OSGi service contract
+- `hello-service` registers `HelloService` as the OSGi compile fixture
+- the C++ client is the native compile/test fixture
 
-Next step:
-Implement hello-service and register the OSGi service.
+Build all bundles with:
+
+```sh
+cmake -S native-hello -B native-hello/build
+cmake --build native-hello/build
+ctest --test-dir native-hello/build --output-on-failure
+mvn -B -ntp -f server-osgi/pom.xml clean package
+```
+
+Jenkins archives the generated C++ executable and OSGi bundles as build
+artifacts for downstream deployment.
+
+The greeting can be changed at runtime with `-Dhello.message="Your message"`.
