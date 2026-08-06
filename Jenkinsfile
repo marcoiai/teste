@@ -58,13 +58,7 @@ pipeline {
             steps {
                 sh '''
                     EXPECTED_MESSAGE=$(tr -d '\\r\\n' < config/hello-message.txt)
-                    MOCK_PORT=$((19090 + BUILD_NUMBER))
-                    PORT="$MOCK_PORT" python3 mock/hello_endpoint.py > /tmp/hello-endpoint.log 2>&1 &
-                    MOCK_PID=$!
-                    trap 'kill $MOCK_PID 2>/dev/null || true' EXIT
-                    sleep 1
-                    curl --fail --silent --show-error http://127.0.0.1:$MOCK_PORT/hello -o /tmp/mock-response
-                    ACTUAL_MESSAGE=$(tr -d '\\r\\n' < /tmp/mock-response)
+                    ACTUAL_MESSAGE=$(python3 mock/hello_endpoint.py --check)
                     printf 'mock response: %s\\n' "$ACTUAL_MESSAGE"
                     test "$ACTUAL_MESSAGE" = "$EXPECTED_MESSAGE"
                 '''
