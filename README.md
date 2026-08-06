@@ -22,4 +22,6 @@ The response is versioned in `config/hello-message.txt`. Change that file,
 commit, and push; Jenkins deploys the mock `/hello` endpoint and verifies the
 new committed message before publishing artifacts.
 
+The CD stage packages the mock as a Docker image and runs it on port `9090`.
+
 The greeting can be changed at runtime with `-Dhello.message="Your message"`.

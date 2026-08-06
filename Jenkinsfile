@@ -65,6 +65,18 @@ pipeline {
             }
         }
 
+        stage('Container deploy') {
+            steps {
+                sh '''
+                    docker build --tag ci-cpp-osgi-demo:${BUILD_NUMBER} .
+                    docker rm --force ci-cpp-osgi-demo-running 2>/dev/null || true
+                    docker run --detach --name ci-cpp-osgi-demo-running --publish 9090:9090 ci-cpp-osgi-demo:${BUILD_NUMBER}
+                    sleep 1
+                    curl --fail --silent http://127.0.0.1:9090/hello
+                '''
+            }
+        }
+
         stage('Publish artifacts') {
             when {
                 expression { params.PUBLISH_ARTIFACTS }
