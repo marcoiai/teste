@@ -63,7 +63,10 @@ pipeline {
                     MOCK_PID=$!
                     trap 'kill $MOCK_PID 2>/dev/null || true' EXIT
                     sleep 1
-                    test "$(curl --fail --silent http://127.0.0.1:$MOCK_PORT/hello)" = "$EXPECTED_MESSAGE"
+                    curl --fail --silent --show-error http://127.0.0.1:$MOCK_PORT/hello -o /tmp/mock-response
+                    ACTUAL_MESSAGE=$(tr -d '\\r\\n' < /tmp/mock-response)
+                    printf 'mock response: %s\\n' "$ACTUAL_MESSAGE"
+                    test "$ACTUAL_MESSAGE" = "$EXPECTED_MESSAGE"
                 '''
             }
         }
